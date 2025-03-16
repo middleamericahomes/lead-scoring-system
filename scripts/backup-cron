@@ -1,0 +1,2 @@
+# Daily backup at 2 AM
+0 2 * * * /opt/lead-scoring-system/scripts/backup.sh > /var/log/lead-scoring-backup.log 2>&1 

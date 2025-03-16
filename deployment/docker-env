@@ -1,0 +1,8 @@
+# Database configuration
+DB_PASSWORD=securepassword123
+
+# Redis configuration
+REDIS_PASSWORD=redispassword123
+
+# Frontend configuration
+NEXT_PUBLIC_API_URL=http://srv754513.hstgr.cloud/api 

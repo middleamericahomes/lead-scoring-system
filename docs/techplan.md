@@ -61,7 +61,7 @@ PHASE 3: Tagging Logic & Initial Scoring
 Tag Assignment Mechanism:
 
 On data import or update, assign tags to the lead (Lead_Tag table).
-Example: If CSV row indicates “Foreclosure,” link lead_id → Foreclosure tag.
+Example: If CSV row indicates "Foreclosure," link lead_id → Foreclosure tag.
 Expiration:
 
 For each assigned tag, set expiration_at = assigned_at + expiration_days.
@@ -75,7 +75,7 @@ Implementation:
 A function calculate_lead_score(lead_id):
 Fetch active tags → sum up tag base scores → apply time-based modifications → return final score.
 Store the final score in a lead.score column or a separate table.
-Manual “Recalculate Scores”:
+Manual "Recalculate Scores":
 
 API Endpoint: /api/leads/recalculate-scores
 Implementation approach:
@@ -106,7 +106,7 @@ Framework: React or Vue.
 Folder Structure: /pages or /components for routes and UI components.
 Lead Listing & Filtering:
 
-Page: “All Leads”
+Page: "All Leads"
 Columns: address, tags, score, created_at.
 Basic filters: by score (range), by tag, search by address.
 Manual Score Recalculation UI:
@@ -127,13 +127,42 @@ Address Verification:
 
 Integrate USPS/SmartyStreets for address standardization.
 On import, send each address to the API:
-If verified, store a “verified_address” field + a “verified” boolean.
+If verified, store a "verified_address" field + a "verified" boolean.
 UI indicators for addresses that are unverified.
 Absentee Logic:
 
 Compare property_address vs. mailing_address (once verified).
-Auto-assign “Absentee” tags accordingly (in-county, out-of-county, out-of-state).
+Auto-assign "Absentee" tags accordingly (in-county, out-of-county, out-of-state).
 Re-check each time an address is updated.
+
+Enhanced Instance-Based Tag Expiration:
+
+Implementation Detail: Each tag assignment (in the lead_tag table) has its own independent expiration timeline based on when it was applied to a property.
+Database Fields:
+  lead_tag.assigned_at: DateTime (when the tag was applied to a specific lead)
+  lead_tag.expiration_at: DateTime (calculated from assigned_at + tag.expiration_days)
+  lead_tag.is_expired: Boolean (flag to track expiration status)
+Business Logic: Expiration is calculated per-instance, not globally for a tag type.
+
+Smart Expiration Calculation:
+Service Method: Create calculate_tag_expiration(lead_id, tag_id, assigned_date, expiration_days)
+  Calculate expiration date: expiration_at = assigned_at + timedelta(days=expiration_days)
+  Store both the expiration date and a boolean flag for quick queries
+Implementation: Apply this logic during initial tag assignment.
+
+Retroactive Expiration Updates:
+API Endpoint: Create /api/tags/{tag_id}/update-expiration
+  Parameters: new_expiration_days, apply_retroactively (boolean)
+Backend Service: Implement update logic to modify tag settings and optionally update all existing assignments
+  If apply_retroactively=true, recalculate expiration for all instances based on original assignment date
+  Update expiration status if needed (reactivate expired tags if they should now be active)
+  Trigger scoring updates for affected leads.
+
+Tag Configuration UI Enhancement:
+Frontend Component: Extend tag management interface with clear expiration settings
+UI Element: Add toggle switch "Apply changes retroactively to existing assignments"
+Visual feedback: Show count of tag assignments that would be affected by retroactive changes.
+
 PHASE 7: Bulk Actions & Progress Visibility
 Bulk Import Enhancements:
 
@@ -147,6 +176,27 @@ DNAMA (Do Not Append Mailing Address):
 
 Toggle field on leads with verified addresses.
 If DNAMA = true, skip any future mailing address updates.
+
+Tag Expiration UI and Monitoring:
+
+Tag Status Visualization:
+  UI Component: Enhanced tag status display showing original assignment date, expiration date, and status
+  Visual indicator of time remaining before expiration.
+
+Bulk Expiration Management:
+  API Endpoint: /api/tags/bulk-update-expiration
+  Frontend Feature: Multi-select tags to modify expiration settings in bulk
+  Option: Toggle to apply changes retroactively to each selected tag.
+
+Expiration Audit Trail:
+  Database: Add audit logging for expiration changes (old value, new value, affected assignments)
+  UI Component: History view of expiration setting changes.
+
+Expiration Notifications:
+  Feature: Optional notification when tags are about to expire
+  Implementation: Daily check for tags expiring in the next X days
+  UI: Banner or notification in the leads view highlighting soon-to-expire tags.
+
 PHASE 8: Advanced Deal Tracking (Optional at This Stage)
 (If deal tracking is required now, implement. Otherwise, can wait until the scoring is 100% stable.)
 
@@ -169,7 +219,7 @@ If certain queries are repeated often (e.g., top 100 leads by score), cache thos
 PHASE 10: Final UI Polishing & Extended Features
 Enhanced Filters & Smart Lists:
 
-Create dynamic saved filters (“Smart Lists”), e.g., “Score > 2000 & Tag = Foreclosure.”
+Create dynamic saved filters ("Smart Lists"), e.g., "Score > 2000 & Tag = Foreclosure."
 Provide a simple UI to build filter conditions (like a rule builder).
 Offer quick list creation and one-click export (CSV, etc.).
 Direct Mail / Marketing Integrations (If Required in Current Scope):
@@ -210,7 +260,7 @@ Strict validations on address fields, tag assignments, etc.
 Clear rules for handling duplicates.
 Scoring Accuracy
 
-Detailed logs for how each lead’s score is calculated at each step.
+Detailed logs for how each lead's score is calculated at each step.
 Build debug endpoints or logs to verify correctness.
 Scalability
 

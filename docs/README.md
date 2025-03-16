@@ -11,33 +11,18 @@ lead-scoring-system/
 │   ├── next.config.js        # Next.js configuration
 │   ├── postcss.config.js     # PostCSS configuration
 │   ├── tailwind.config.js    # Tailwind CSS configuration
-│   ├── tsconfig.json         # TypeScript configuration
-│   └── nginx/                # Nginx configurations
-│       └── lead-scoring.conf # Nginx configuration for the app
+│   └── tsconfig.json         # TypeScript configuration
 │
 ├── deployment/               # Deployment-related files
 │   ├── .env.prod             # Production environment variables
-│   ├── docker-env            # Docker environment variables
 │   ├── Dockerfile            # Frontend Dockerfile
-│   ├── docker-compose.yml    # Docker Compose configuration
-│   └── docker/               # Additional Docker configurations
-│       └── docker-compose-backend.yml # Backend-only config
-│
-├── docs/                     # Documentation
-│   ├── deployment/           # Deployment-related documentation
-│   ├── frontend/             # Frontend-related documentation
-│   ├── backend/              # Backend-related documentation
-│   └── infrastructure/       # Infrastructure documentation
+│   └── docker-compose.yml    # Docker Compose configuration
 │
 ├── scripts/                  # Utility scripts
 │   ├── backup.sh             # Database backup script
 │   ├── deploy.sh             # Deployment script
 │   ├── rebuild.sh            # Rebuild application script
-│   ├── setup-ssl.sh          # SSL setup script
-│   └── cleanup.sh            # Cleanup script for organization
-│
-├── public/                   # Public assets
-│   └── placeholder/          # Placeholder HTML pages
+│   └── setup-ssl.sh          # SSL setup script
 │
 ├── src/                      # Source code
 │   ├── app/                  # Next.js App Router
@@ -67,16 +52,7 @@ lead-scoring-system/
 │   │
 │   └── utils/                # Additional utilities
 │
-├── backend/                  # Backend application code (FastAPI)
-│   ├── app/                  # Backend application
-│   ├── alembic/              # Database migrations
-│   └── requirements.txt      # Python dependencies
-│
-├── common/                   # Shared code between frontend and backend
-│   └── utils/                # Shared utilities
-│
-├── package.json              # NPM package configuration
-└── README.md                 # This file
+└── package.json              # NPM package configuration
 ```
 
 ## Getting Started
@@ -115,14 +91,6 @@ lead-scoring-system/
 - Lead import functionality
 - Dashboard with analytics
 - User-friendly interface with responsive design
-
-## Documentation
-
-See the [docs](./docs) directory for detailed documentation, including:
-
-- [Deployment Guide](./docs/deployment/DEPLOYMENT_GUIDE.md)
-- [Frontend Fix Plan](./docs/frontend/frontend-fix-plan.md)
-- [Directory Organization](./docs/directory-organization-plan.md)
 
 ## License
 
