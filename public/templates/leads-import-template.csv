@@ -1,0 +1,4 @@
+property_address,property_city,property_state,property_zip_code,owner_name,mailing_address,mailing_city,mailing_state,mailing_zip,first_name,last_name,Phone 1,Phone 2,Phone 3,Phone Type 1,Phone Type 2,Phone Type 3,email
+123 Main St,Anytown,CA,90210,John Smith,123 Main St,Anytown,CA,90210,John,Smith,(555) 123-4567,(555) 987-6543,,Mobile,Home,,john.smith@example.com
+456 Oak Ave,Somewhere,TX,75001,Jane Doe,789 Pine Rd,Elsewhere,TX,75002,Jane,Doe,(555) 222-3333,,,Home,,,jane.doe@example.com
+789 Pine Rd,Elsewhere,TX,75002,Acme Corporation,789 Pine Rd,Elsewhere,TX,75002,,,,,,,,,contact@acmecorp.com 

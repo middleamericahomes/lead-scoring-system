@@ -5,7 +5,7 @@ This module initializes the FastAPI application and includes all the route handl
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1 import leads, tags, scoring
+from app.api.v1 import leads, tags, scoring, imports
 from app.core.config import settings
 
 # Create FastAPI app instance
@@ -34,6 +34,7 @@ async def root():
 app.include_router(leads.router, prefix=settings.API_V1_STR)
 app.include_router(tags.router, prefix=settings.API_V1_STR)
 app.include_router(scoring.router, prefix=settings.API_V1_STR)
+app.include_router(imports.router, prefix=settings.API_V1_STR)
 
 if __name__ == "__main__":
     # This block will be executed when running the file directly
